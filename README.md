@@ -1,68 +1,68 @@
 # Auto Timer Click Streaming Community
 
-Estensione browser Manifest V3 che monitora un timer in pagina e clicca automaticamente un pulsante quando il conto alla rovescia scende sotto una soglia definita.
+A Manifest V3 browser extension that monitors a page timer and automatically clicks a button when the countdown drops below a defined threshold.
 
-Il progetto include anche una logica di avvio automatico del player: se il timer risulta fermo a `00:00`, l'estensione prova a cliccare il pulsante `play` e continua a verificare finché il timer non riparte.
+The project also includes automatic player start logic: if the timer is stuck at `00:00`, the extension tries to click the `play` button and keeps checking until the timer starts again.
 
-## Funzionalita'
+## Features
 
-- Attivazione e disattivazione rapida da popup.
-- Monitoraggio del timer ogni secondo.
-- Click automatico del pulsante di skip quando il timer arriva a 60 secondi o meno.
-- Countdown visivo prima del click.
-- Tentativo automatico di click su `play` se il timer e' bloccato a `00:00`.
-- Salvataggio dello stato tramite `chrome.storage.local`.
-- Notifiche visive direttamente nella pagina.
+- Quick enable and disable controls from the popup.
+- Timer monitoring every second.
+- Automatic click on the skip button when the timer reaches 60 seconds or less.
+- Visual countdown before the click.
+- Automatic attempt to click `play` when the timer is stuck at `00:00`.
+- State persistence through `chrome.storage.local`.
+- On-page visual notifications.
 
-## Struttura del progetto
+## Project Structure
 
-- `manifest.json`: configurazione dell'estensione.
-- `popup.html`: interfaccia del popup.
-- `popup.js`: logica UI del popup e comunicazione con il content script.
-- `content.js`: monitoraggio timer, gestione play/skip, stato e notifiche.
+- `manifest.json`: extension configuration.
+- `popup.html`: popup interface.
+- `popup.js`: popup UI logic and communication with the content script.
+- `content.js`: timer monitoring, play/skip handling, state management, and notifications.
 
-## Come installarla
+## Installation
 
-1. Apri `chrome://extensions` in Chrome o in un browser Chromium compatibile.
-2. Attiva la modalita' sviluppatore.
-3. Clicca su `Carica estensione non pacchettizzata`.
-4. Seleziona la cartella del progetto.
+1. Open `chrome://extensions` in Chrome or another Chromium-based browser.
+2. Enable Developer mode.
+3. Click `Load unpacked`.
+4. Select the project folder.
 
-## Come usarla
+## Usage
 
-1. Apri la pagina web target su cui e' presente il player.
-2. Apri il popup dell'estensione.
-3. Premi `Attiva`.
-4. Lascia aperta la pagina: l'estensione iniziera' a leggere il timer e ad agire automaticamente.
-5. Premi `Disattiva` per fermare il monitoraggio.
+1. Open the target web page where the player is available.
+2. Open the extension popup.
+3. Click `Attiva`.
+4. Keep the page open: the extension will start reading the timer and acting automatically.
+5. Click `Disattiva` to stop monitoring.
 
-## Configurazione tecnica
+## Technical Configuration
 
-La logica principale e' in `content.js`, dentro l'oggetto `CONFIG`:
+The main logic is in `content.js`, inside the `CONFIG` object:
 
-- `TIMER_XPATH`: XPath dell'elemento che contiene il timer.
-- `BUTTON_XPATH`: XPath del pulsante da cliccare allo scadere della soglia.
-- `PLAY_BUTTON_PRIMARY_XPATH`: XPath principale del pulsante play.
-- `PLAY_BUTTON_XPATH`: XPath di fallback del pulsante play.
-- `THRESHOLD_SECONDS`: soglia sotto la quale eseguire lo skip.
-- `CLICK_DELAY_MS`: attesa prima del click automatico.
-- `CHECK_INTERVAL_MS`: frequenza di controllo del timer.
+- `TIMER_XPATH`: XPath of the element that contains the timer.
+- `BUTTON_XPATH`: XPath of the button to click when the threshold is reached.
+- `PLAY_BUTTON_PRIMARY_XPATH`: primary XPath for the play button.
+- `PLAY_BUTTON_XPATH`: fallback XPath for the play button.
+- `THRESHOLD_SECONDS`: threshold below which the skip action is triggered.
+- `CLICK_DELAY_MS`: delay before the automatic click.
+- `CHECK_INTERVAL_MS`: timer check frequency.
 
-Se la struttura DOM della pagina target cambia, gli XPath dovranno essere aggiornati.
+If the target page DOM changes, the XPath selectors will need to be updated.
 
-## Permessi usati
+## Permissions Used
 
-- `storage`: salva stato attivo/disattivo e stato operativo.
-- `tabs`: invia messaggi alla scheda attiva dal popup.
-- `host_permissions: <all_urls>`: il content script e' iniettato su tutte le pagine.
+- `storage`: stores the enabled/disabled state and runtime status.
+- `tabs`: sends messages to the active tab from the popup.
+- `host_permissions: <all_urls>`: injects the content script on all pages.
 
-## Limiti attuali
+## Current Limitations
 
-- Il funzionamento dipende da XPath molto specifici.
-- L'estensione e' pensata per una webapp precisa, non per siti generici.
-- Se il DOM cambia, il timer o i pulsanti potrebbero non essere piu' trovati.
-- Non sono presenti test automatici o una pipeline di build.
+- The extension depends on very specific XPath selectors.
+- It is designed for one specific web app, not for generic websites.
+- If the DOM changes, the timer or buttons may no longer be found.
+- There are no automated tests or build pipeline.
 
-## Note
+## Notes
 
-Il nome mostrato nel browser e' `Auto Timer Click Streaming Community`, mentre nel popup compare `Auto Timer Click`.
+The browser name is `Auto Timer Click Streaming Community`, while the popup title is `Auto Timer Click`.

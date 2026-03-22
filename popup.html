@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Auto Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      min-width: 260px;
+      padding: 14px;
+      margin: 0;
+      background: #f7f7f7;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+    h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+    }
+
+    .status {
+      font-size: 13px;
+      margin-bottom: 12px;
+      color: #333;
+      min-height: 34px;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+    }
+
+    button {
+      flex: 1;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .on {
+      background: #16a34a;
+      color: white;
+    }
+
+    .off {
+      background: #dc2626;
+      color: white;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .badge.active {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.inactive {
+      background: #e5e7eb;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h3>Auto Timer Click</h3>
+    <div id="badge" class="badge inactive">OFF</div>
+    <div id="status" class="status">Caricamento...</div>
+
+    <div class="row">
+      <button id="enableBtn" class="on">Attiva</button>
+      <button id="disableBtn" class="off">Disattiva</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

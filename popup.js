@@ -3,40 +3,55 @@ const badgeEl = document.getElementById("badge");
 const enableBtn = document.getElementById("enableBtn");
 const disableBtn = document.getElementById("disableBtn");
 
+const STORAGE_KEYS = {
+    enabled: "autoDemoEnabled",
+    status: "autoDemoStatus",
+};
+
 function updateUI(enabled, status) {
     statusEl.textContent = status || "—";
     badgeEl.textContent = enabled ? "ON" : "OFF";
     badgeEl.className = "badge " + (enabled ? "active" : "inactive");
 }
 
-function sendToContentScript(message, callback) {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (!tabs[0]) {
-            updateUI(false, "Nessuna scheda attiva");
-            return;
-        }
-        chrome.tabs.sendMessage(tabs[0].id, message, (response) => {
-            if (chrome.runtime.lastError) {
-                updateUI(false, "Content script non raggiungibile");
-                return;
-            }
-            if (callback) callback(response);
-        });
+function refreshUI() {
+    chrome.storage.local.get(
+        [STORAGE_KEYS.enabled, STORAGE_KEYS.status],
+        (result) => {
+            updateUI(
+                Boolean(result[STORAGE_KEYS.enabled]),
+                result[STORAGE_KEYS.status] || "Disattivato",
+            );
+        },
+    );
+}
+
+function setEnabled(value) {
+    chrome.storage.local.set({
+        [STORAGE_KEYS.enabled]: value,
+        [STORAGE_KEYS.status]: value
+            ? "Attivazione monitor..."
+            : "Disattivato",
     });
 }
 
 enableBtn.addEventListener("click", () => {
-    sendToContentScript({ type: "SET_ENABLED", enabled: true }, (res) => {
-        updateUI(res.enabled, res.status);
-    });
+    setEnabled(true);
 });
 
 disableBtn.addEventListener("click", () => {
-    sendToContentScript({ type: "SET_ENABLED", enabled: false }, (res) => {
-        updateUI(res.enabled, res.status);
-    });
+    setEnabled(false);
 });
 
-sendToContentScript({ type: "GET_STATUS" }, (res) => {
-    updateUI(res.enabled, res.status);
+chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (
+        areaName !== "local" ||
+        (!changes[STORAGE_KEYS.enabled] && !changes[STORAGE_KEYS.status])
+    ) {
+        return;
+    }
+
+    refreshUI();
 });
+
+refreshUI();
